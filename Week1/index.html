@@ -69,7 +69,15 @@
           <!-- 如果 productDetail 有資料，就顯示產品細節 -->
           <template v-if="productDetail.title">
             <div class="card mb-3">
-              <img :src="productDetail.imageUrl" class="card-img-top primary-image" alt="主圖">
+              <div>
+                <img :src="productDetail.imageUrl" class="card-img-top primary-image" alt="主圖">
+                <ul class="list-unstyled d-flex">
+                  <li v-for="imageUrl in productDetail.imagesUrl" :key="imageUrl">
+                    <img :src="imageUrl" :alt="productDetail.title" @mouseover="onHover(imageUrl)"
+                    @mouseout="overHover" class="images m-2">
+                  </li>
+                </ul>
+              </div>
               <div class="card-body">
                 <h5 class="card-title">
                   {{ productDetail.title }}
@@ -87,11 +95,13 @@
             <!-- <template v-for="image in productDetail.imagesUrl" :key="productDetail.id">
               <img :src="image" :alt="productDetail.title" class="images m-2">
             </template> -->
-            <ul class="d-flex list-unstyled">
+            
+            <!-- <ul class="d-flex list-unstyled">
               <li v-for="image in productDetail.imagesUrl" :key="productDetail.id">
                 <img :src="image" :alt="productDetail.title" class="images m-2">
               </li>
-            </ul>
+            </ul> -->
+            
           </template>
           <p class="text-secondary" v-else>請選擇一個商品查看</p>
         </div>
