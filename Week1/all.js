@@ -60,6 +60,17 @@ const app = Vue.createApp({
         },
       ],
       productDetail: {},
+      tempUrl: "",
     };
   },
+  methods: {
+    onHover(imageUrl) {
+      this.tempUrl = this.productDetail.imageUrl;
+      this.productDetail.imageUrl = imageUrl;
+    },
+    overHover() {
+      this.productDetail.imageUrl = this.tempUrl;
+    },
+  },
+  watch: {},
 }).mount("#app");
