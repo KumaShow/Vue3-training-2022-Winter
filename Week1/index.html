@@ -44,8 +44,12 @@
                 </td>
                 <td width="150">
                   <a href="#!" class="text-decoration-none link-dark" @click.prevent="product.is_enabled = !product.is_enabled">
-                    <span v-if="product.is_enabled" class="text-success">啟用</span>
-                    <span v-else>未啟用</span>
+                    <!-- <span v-if="product.is_enabled" class="text-success">啟用</span>
+                    <span v-else class="text-danger">未啟用</span> -->
+                    <span :class="{'text-success': product.is_enabled,
+                                  'text-danger': !product.is_enabled}">
+                      {{ product.is_enabled ? '啟用' : '未啟用' }}
+                    </span>
                   </a>
                 </td>
                 <td width="120">
@@ -80,9 +84,14 @@
                 </div>
               </div>
             </div>
-            <template v-for="image in productDetail.imagesUrl">
+            <!-- <template v-for="image in productDetail.imagesUrl" :key="productDetail.id">
               <img :src="image" :alt="productDetail.title" class="images m-2">
-            </template>
+            </template> -->
+            <ul class="d-flex list-unstyled">
+              <li v-for="image in productDetail.imagesUrl" :key="productDetail.id">
+                <img :src="image" :alt="productDetail.title" class="images m-2">
+              </li>
+            </ul>
           </template>
           <p class="text-secondary" v-else>請選擇一個商品查看</p>
         </div>
