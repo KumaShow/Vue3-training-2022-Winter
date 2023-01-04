@@ -27,7 +27,9 @@ const app = Vue.createApp({
 
       axios
         .post(url)
-        .then(() => {})
+        .then(() => {
+          this.getProducts();
+        })
         .catch((err) => {
           alert(err.data.message);
           window.location.replace("./login.html");
@@ -53,6 +55,5 @@ const app = Vue.createApp({
   },
   mounted() {
     this.checkAdmin();
-    this.getProducts();
   },
 }).mount("#app");
