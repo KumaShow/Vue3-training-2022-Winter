@@ -51,10 +51,8 @@ const app = Vue.createApp({
         .catch((err) => console.log(err));
     },
   },
-  created() {
-    this.checkAdmin();
-  },
   mounted() {
+    this.checkAdmin();
     this.getProducts();
   },
 }).mount("#app");
