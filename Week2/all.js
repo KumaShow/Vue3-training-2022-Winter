@@ -47,7 +47,6 @@ const app = Vue.createApp({
       axios
         .get(url)
         .then((res) => {
-          console.log(res);
           this.products = res.data.products;
         })
         .catch((err) => console.log(err));
