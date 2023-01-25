@@ -47,8 +47,14 @@
                 <td>{{ product.origin_price}}</td>
                 <td>{{ product.price }}</td>
                 <td>
-                    <a href="#!" class="text-decoration-none link-dark p-2" @click.prevent="product.is_enabled = !product.is_enabled">
-                      <span :class="{'text-success': product.is_enabled,'text-danger': !product.is_enabled}">{{product.is_enabled ?  '啟用' : '未啟用' }}</span>
+                    <a
+                      @click.prevent="product.is_enabled = !product.is_enabled"
+                      class="text-decoration-none link-dark p-2"
+                      href="#!"
+                    >
+                      <span :class="{'text-success': product.is_enabled,'text-danger': !product.is_enabled}">
+                        {{product.is_enabled ?  '啟用' : '未啟用' }}
+                      </span>
                     </a>
                   </td>
                 <td>
@@ -165,7 +171,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="origin_price" class="form-label">原價</label>
                       <input
-                        v-model="tempProduct.origin_price"
+                        v-model.number="tempProduct.origin_price"
                         id="origin_price"
                         class="form-control"
                         min="0"
@@ -176,7 +182,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="price" class="form-label">售價</label>
                       <input
-                        v-model="tempProduct.price"
+                        v-model.number="tempProduct.price"
                         id="price"
                         class="form-control"
                         min="0"
