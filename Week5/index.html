@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 5</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css'
+    integrity='sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=='
+    crossorigin='anonymous' />
+  <!-- <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet"> -->
+</head>
+<body>
+  
+  <div id="app">
+    <div class="container">
+      <div class="mt-4">
+        <!-- 產品Modal -->
+        <detail-product ref="detailProduct" :product="product" @add-to-cart="addToCart"></detail-product>
+        <!-- 商品列表 -->
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>圖片</th>
+              <th>商品名稱</th>
+              <th>價格</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="product in products" :key="product.id">
+              <td style="width: 200px">
+                <div
+                  style="height: 100px; background-size: cover; background-position: center"
+                  :style="{backgroundImage: `url(${product.imageUrl})`}"
+                ></div>
+              </td>
+              <td>
+                {{ product.title }}
+              </td>
+              <td>
+                <div v-if="product.price === product.origin_price" class="h5">{{ product.price }} 元</div>
+                <div v-else>
+                  <del class="h6">原價 {{ product.origin_price }} 元</del>
+                  <div class="h5">現在只要 {{ product.price }} 元</div>
+                </div>
+              </td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button
+                    @click="getProductDetail(product)"
+                    :disable="loadingItem === product.id"
+                    class="btn btn-outline-secondary"
+                    type="button"
+                  >
+                    <i class="fas fa-spinner fa-pulse" v-show="loadingItem === product.id"></i>
+                    查看更多
+                  </button>
+                  <button
+                    @click="addToCart(product.id)"
+                    :disable="loadingItem === product.id"
+                    class="btn btn-outline-danger"
+                    type="button"
+                  >
+                    <i class="fas fa-spinner fa-pulse" v-show="loadingItem === product.id"></i>
+                    加到購物車
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 購物車列表 -->
+        <div class="text-end">
+          <button
+            @click="clearAllCarts"
+            class="btn btn-outline-danger"
+            type="button"
+            :disabled="!cart?.carts?.length"
+          >
+            清空購物車
+          </button>
+        </div>
+        <!-- 購物車 -->
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th></th>
+              <th>品名</th>
+              <th style="width: 150px">數量/單位</th>
+              <th>單價</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-if="cart.carts">
+              <tr v-for="item in cart.carts" :key="item.id">
+                <td>
+                  <button
+                    @click="deleteCartItem(item.id)"
+                    class="btn btn-outline-danger btn-sm"
+                    type="button"
+                    :disabled="loadingItem === item.id"
+                  >
+                    <!-- <i class="fas fa-spinner fa-pulse" v-show="loadingItem === item.id"></i> -->
+                    x
+                  </button>
+                </td>
+                <td>
+                  {{ item.product.title }}
+                  <div class="text-success" v-if="item.coupon_code">
+                    已套用優惠券
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group input-group-sm">
+                    <div class="input-group mb-3">
+                      <input
+                        v-model.number="item.qty"
+                        @blur="updateCartItem(item)"
+                        class="form-control"
+                        min="1"
+                        max="20"
+                        type="number"
+                        :disabled="loadingItem === item.id"
+                      >
+                      <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <small class="text-success" v-if="item.coupon_code">折扣價：</small>
+                  {{ item.total }}
+                </td>
+              </tr>
+            </template>
+          </tbody>
+          <tfoot>
+            <tr v-if="cart.total === cart.final_total">
+              <td colspan="3" class="text-end">總計</td>
+              <td class="text-end">{{ cart.total }}</td>
+            </tr>
+            <tr v-else>
+              <td colspan="3" class="text-end text-success">折扣價</td>
+              <td class="text-end text-success">{{ cart.final_total }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- 表單 -->
+      <form-component :cart="cart" :get-cart="getCart"></form-component>
+      
+    </div>
+  </div>
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://unpkg.com/vee-validate@next"></script>
+  <script src="https://unpkg.com/@vee-validate/i18n@4.1.0"></script>
+  <script src="https://unpkg.com/@vee-validate/rules"></script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script> -->
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-demi/0.13.11/index.iife.js"></script>
+  <script>const I = VueDemi; const vueDemi = VueDemi;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pinia/2.0.28/pinia.iife.js"></script> -->
+  <script src="./JS/index.js" type="module"></script>
+</body>
+</html>
