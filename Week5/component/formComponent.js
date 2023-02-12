@@ -107,6 +107,7 @@ export default {
           .then((res) => {
             alert(res.data.message);
             this.getCart();
+            this.order.message = "";
             this.$refs.form.resetForm();
           })
           .catch((err) => {
