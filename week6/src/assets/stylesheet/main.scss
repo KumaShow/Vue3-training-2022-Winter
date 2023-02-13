@@ -1,0 +1,6 @@
+// @import "bootstrap/scss/functions";
+// @import "./helpers/variables"; // 自定義變數
+// @import "bootstrap/scss/maps"; // Bootstrap 5.2 更新後須加入
+// @import "./helpers/utilities"; // 自定義 utiliteis，Bootstrap 5.2 需匯入上面的 maps
+@import "bootstrap/scss/bootstrap";
+@import "./_base.scss";
