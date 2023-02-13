@@ -75,12 +75,17 @@
     :temp-product="tempProduct"
     @get-products="getProducts"
   />
+  <!-- Loading 元件 -->
+  <TheLoading />
 </template>
 
 <script>
 import AdminProductModal from "@/components/AdminProductModal.vue";
 import AdminProductModalDelete from "@/components/AdminProductModalDelete.vue";
-import ThePagination from "../../components/ThePagination.vue";
+import ThePagination from "@/components/ThePagination.vue";
+import TheLoading from "@/components/TheLoading.vue";
+import useLoadingStore from "@/stores/useLoadingStore";
+import { mapActions } from "pinia";
 const { VITE_API, VITE_API_PATH } = import.meta.env;
 
 export default {
@@ -98,11 +103,15 @@ export default {
     AdminProductModal,
     AdminProductModalDelete,
     ThePagination,
+    TheLoading,
   },
   mounted() {
+    this.doAjax();
     this.getProducts();
   },
   methods: {
+    ...mapActions(useLoadingStore, ["doAjax"]),
+
     // 取得後台產品資料
     getProducts(page = 1) {
       const url = `${VITE_API}/api/${VITE_API_PATH}/admin/products?page=${page}`;
@@ -115,6 +124,7 @@ export default {
         .catch((err) => alert(err));
     },
 
+    // 編輯產品 Modal
     updateProduct() {
       // 預設為更新產品
       let url = `${VITE_API}/api/${VITE_API_PATH}/admin/product/${this.tempProduct.id}`;

@@ -36,7 +36,6 @@
           </td>
           <td>
             <div class="btn-group btn-group-sm">
-              <!-- 不確定這裡的寫法好不好 -->
               <button
                 @click="getProductDetail(this.$refs.productModal, product.id)"
                 :disable="loadingItem === product.id"
@@ -69,16 +68,21 @@
   </section>
   <!-- 產品細節 Modal -->
   <ProductModal ref="productModal" @add-to-cart="addToCart" />
+  <!-- Loading 元件 -->
+  <TheLoading />
 </template>
 
 <script>
 import { mapState, mapActions } from "pinia";
 import ProductModal from "../components/ProductModal.vue";
+import TheLoading from "../components/TheLoading.vue";
 import useProductStore from "../stores/useProductStore";
+import useLoadingStore from "../stores/useLoadingStore";
 
 export default {
   components: {
     ProductModal,
+    TheLoading,
   },
   computed: {
     ...mapState(useProductStore, ["products", "loadingItem"]),
@@ -89,9 +93,11 @@ export default {
       "getProductDetail",
       "addToCart",
     ]),
+    ...mapActions(useLoadingStore, ["doAjax"]),
   },
   mounted() {
     this.getProducts();
+    this.doAjax();
   },
 };
 </script>

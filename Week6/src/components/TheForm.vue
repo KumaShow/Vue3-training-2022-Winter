@@ -95,6 +95,8 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import useCartStore from "../stores/useCartStore";
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
@@ -114,6 +116,8 @@ export default {
   },
   methods: {
     ...mapActions(useCartStore, ["getCart"]),
+
+    // 提交訂單
     submitOrder() {
       const url = `${import.meta.env.VITE_API}/api/${
         import.meta.env.VITE_API_PATH
@@ -123,9 +127,15 @@ export default {
       if (this.cart?.carts?.length) {
         this.$http
           .post(url, { data })
-          .then((res) => {
+          .then(() => {
             this.getCart();
-            alert(res.data.message);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "訂單已送出成功",
+              showConfirmButton: false,
+              timer: 1500,
+            });
             this.$refs.form.resetForm();
             this.order.message = "";
           })

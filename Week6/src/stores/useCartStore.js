@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import Swal from "sweetalert2";
 const { VITE_API, VITE_API_PATH } = import.meta.env;
 
 const useCartStore = defineStore("useCartStore", {
@@ -7,8 +8,10 @@ const useCartStore = defineStore("useCartStore", {
     cart: {
       carts: [],
     },
+    // loadingItem,
   }),
   actions: {
+    // 取得購物車資料
     getCart() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/cart`;
       axios
@@ -21,13 +24,20 @@ const useCartStore = defineStore("useCartStore", {
         });
     },
 
+    // 清空購物車
     clearAllCarts() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/carts`;
 
       axios
         .delete(url)
         .then(() => {
-          alert("購物車已清空");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "購物車已清空",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           this.getCart();
         })
         .catch((err) => {
@@ -35,14 +45,21 @@ const useCartStore = defineStore("useCartStore", {
         });
     },
 
+    // 刪除購物車單一產品
     deleteCartItem(id) {
       const url = `${VITE_API}/api/${VITE_API_PATH}/cart/${id}`;
       this.loadingItem = id;
       axios
         .delete(url)
         .then(() => {
-          alert("已刪除");
           this.getCart();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "已刪除",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           this.loadingItem = "";
         })
         .catch((err) => {
@@ -50,6 +67,7 @@ const useCartStore = defineStore("useCartStore", {
         });
     },
 
+    // 更新購物車產品數量
     updateCartItem(item) {
       const url = `${VITE_API}/api/${VITE_API_PATH}/cart/${item.id}`;
       const cart = {
@@ -70,7 +88,13 @@ const useCartStore = defineStore("useCartStore", {
         .put(url, { data: cart })
         .then(() => {
           this.getCart();
-          alert("數量已更新");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "數量已更新",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           this.loadingItem = "";
         })
         .catch((err) => {

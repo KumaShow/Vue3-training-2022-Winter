@@ -13,6 +13,10 @@ import { required, email, min } from "@vee-validate/rules";
 import { localize, setLocale } from "@vee-validate/i18n";
 // 匯入繁體中文語系檔案
 import zhTW from "@vee-validate/i18n/dist/locale/zh_TW.json";
+// SweetAlert 2
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+
 import "./assets/stylesheet/main.scss";
 
 import App from "./App.vue";
@@ -39,6 +43,7 @@ app.component("Form", Form);
 app.component("Field", Field);
 app.component("ErrorMessage", ErrorMessage);
 
+app.use(VueSweetalert2);
 app.use(VueAxios, axios);
 app.use(pinia);
 app.use(router);

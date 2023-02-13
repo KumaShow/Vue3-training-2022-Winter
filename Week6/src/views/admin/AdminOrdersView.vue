@@ -38,16 +38,23 @@
       </tr>
     </tbody>
   </table>
+  <!-- 訂單 Modal -->
   <AdminOrderModal ref="orderModal" />
+  <!-- Loading 元件 -->
+  <TheLoading />
 </template>
 
 <script>
 import AdminOrderModal from "@/components/AdminOrderModal.vue";
+import TheLoading from "@/components/TheLoading.vue";
+import useLoadingStore from "@/stores/useLoadingStore";
+import { mapActions } from "pinia";
 const { VITE_API, VITE_API_PATH } = import.meta.env;
 
 export default {
   components: {
     AdminOrderModal,
+    TheLoading,
   },
   data() {
     return {
@@ -56,6 +63,7 @@ export default {
     };
   },
   mounted() {
+    this.doAjax();
     this.getOrders();
   },
   computed: {
@@ -64,6 +72,8 @@ export default {
     },
   },
   methods: {
+    ...mapActions(useLoadingStore, ["doAjax"]),
+
     // 取得後台訂單資料
     getOrders() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/admin/orders`;

@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 // store 這裡需匯入 axios 方法，否則吃不到全域 this.$http 方法
 import axios from "axios";
+import Swal from "sweetalert2";
+
 const { VITE_API, VITE_API_PATH } = import.meta.env;
 
 const useProductStore = defineStore("useProductStore", {
@@ -34,6 +36,7 @@ const useProductStore = defineStore("useProductStore", {
       this.isShow = true;
       this.modal.openModal();
     },
+
     // 加入購物車
     addToCart(id, num = 1) {
       // 外層購物車按鈕預設數量 +1
@@ -45,9 +48,15 @@ const useProductStore = defineStore("useProductStore", {
       this.loadingItem = id;
       axios
         .post(url, { data })
-        .then((res) => {
-          alert(res.data.message);
-          this.loadingItem = "";
+        .then(() => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "已加入購物車",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // this.loadingItem = "";
           if (this.isShow) {
             this.modal.closeModal();
             this.isShow = false;
