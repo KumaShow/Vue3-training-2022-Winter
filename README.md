@@ -2,9 +2,7 @@
 
 Vue 課程每週主線作業
 
-> 詳細畫面請觀看:
->
-> [首頁](https://kumashow.github.io/Vue3-training-2022-Winter/)
+> [Demo](https://kumashow.github.io/Vue3-training-2022-Winter/)
 
 ## 課程內容
 
@@ -22,3 +20,19 @@ Vue 課程每週主線作業
   * 練習 Vue.js 的各項語法及指令，目標以串接 API 完成一頁式的產品新增、刪除、修改的頁面。
   * 可以新增、編輯、刪除商品
   * 商品啟用、關閉可以使用不同的顏色標示
+
+* 第四週 - 元件化
+  * 將後台頁面 Modal 以及分頁改成元件
+  * 使用 import module 來引入元件
+  * 使用者可以打開 Modal 新增、編輯、刪除商品
+  
+* 第五週 - 進階語法介紹
+  * 使用 VeeValidate 套件完成表單驗證功能
+  * 使用 loading 套件製作 loading 效果
+  * 串接前台 API 完成購物車功能
+
+* 第六週 - Vite、Vue Router
+  * 使用 Vite 完成路由設定
+  * 在 Vite 中完成登入、前台表單驗證功能
+  * 建立 .env 環境變數
+  * 練習 Pinia 狀態管理
