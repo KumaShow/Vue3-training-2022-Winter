@@ -7,13 +7,16 @@ const useLoadingStore = defineStore("useLoadingStore", {
   }),
 
   actions: {
-    doAjax(sec = 3000) {
-      this.isLoading = true;
-      // simulate AJAX
-      setTimeout(() => {
-        this.isLoading = false;
-      }, sec);
+    loadingState(boolean) {
+      this.isLoading = boolean;
     },
+    // doAjax(sec = 3000) {
+    //   this.isLoading = true;
+    //   // simulate AJAX
+    //   setTimeout(() => {
+    //     this.isLoading = false;
+    //   }, sec);
+    // },
     onCancel() {
       console.log("User cancelled the loader.");
     },

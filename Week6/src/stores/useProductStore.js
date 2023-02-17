@@ -2,8 +2,10 @@ import { defineStore } from "pinia";
 // store 這裡需匯入 axios 方法，否則吃不到全域 this.$http 方法
 import axios from "axios";
 import Swal from "sweetalert2";
+import useLoadingStore from "./useLoadingStore";
 
 const { VITE_API, VITE_API_PATH } = import.meta.env;
+const { loadingState } = useLoadingStore();
 
 const useProductStore = defineStore("useProductStore", {
   state: () => ({
@@ -17,13 +19,18 @@ const useProductStore = defineStore("useProductStore", {
     // 取得所有產品
     getProducts() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/products/all`;
+
+      loadingState(true);
+
       axios
         .get(url)
         .then((res) => {
           this.products = res.data.products;
+          loadingState(false);
         })
         .catch((err) => {
           alert(err);
+          loadingState(false);
         });
     },
 
@@ -45,10 +52,13 @@ const useProductStore = defineStore("useProductStore", {
         product_id: id,
         qty: num,
       };
-      this.loadingItem = id;
+      // this.loadingItem = id;
+      loadingState(true);
+
       axios
         .post(url, { data })
         .then(() => {
+          loadingState(false);
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -60,6 +70,7 @@ const useProductStore = defineStore("useProductStore", {
           if (this.isShow) {
             this.modal.closeModal();
             this.isShow = false;
+            loadingState(false);
           }
         })
         .catch((err) => {
@@ -70,8 +81,12 @@ const useProductStore = defineStore("useProductStore", {
     // 取得單一產品資料
     getProduct(productId) {
       const url = `${VITE_API}/api/${VITE_API_PATH}/product/${productId}`;
+      loadingState(true);
+      // 打開前清空上一次產品資料
+      this.product = {};
       axios.get(url).then((res) => {
         this.product = res.data.product;
+        loadingState(false);
       });
     },
   },

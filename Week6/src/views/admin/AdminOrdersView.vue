@@ -63,7 +63,6 @@ export default {
     };
   },
   mounted() {
-    this.doAjax();
     this.getOrders();
   },
   computed: {
@@ -72,13 +71,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useLoadingStore, ["doAjax"]),
+    ...mapActions(useLoadingStore, ["loadingState"]),
 
     // 取得後台訂單資料
     getOrders() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/admin/orders`;
+      this.loadingState(true);
       this.$http.get(url).then((res) => {
         this.orders = res.data.orders;
+        this.loadingState(false);
       });
     },
 

@@ -72,7 +72,6 @@
 import { mapState, mapActions } from "pinia";
 import Modal from "bootstrap/js/dist/modal";
 import useProductStore from "../stores/useProductStore";
-import useLoadingStore from "../stores/useLoadingStore";
 
 export default {
   data() {
@@ -89,13 +88,11 @@ export default {
   },
   methods: {
     ...mapActions(useProductStore, ["addToCart"]),
-    ...mapActions(useLoadingStore, ["doAjax"]),
 
     // 打開 Modal
     openModal() {
       this.modal.show();
       this.qty = 1;
-      this.doAjax(1000);
     },
 
     // 關閉 Modal

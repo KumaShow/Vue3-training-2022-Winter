@@ -106,22 +106,28 @@ export default {
     TheLoading,
   },
   mounted() {
-    this.doAjax();
     this.getProducts();
   },
+  computed: {},
   methods: {
-    ...mapActions(useLoadingStore, ["doAjax"]),
+    ...mapActions(useLoadingStore, ["loadingState"]),
 
     // 取得後台產品資料
     getProducts(page = 1) {
       const url = `${VITE_API}/api/${VITE_API_PATH}/admin/products?page=${page}`;
+      this.loadingState(true);
+
       this.$http
         .get(url)
         .then((res) => {
           this.products = res.data.products;
           this.pagination = res.data.pagination;
+          this.loadingState(false);
         })
-        .catch((err) => alert(err));
+        .catch((err) => {
+          this.loadingState(false);
+          alert(err);
+        });
     },
 
     // 編輯產品 Modal

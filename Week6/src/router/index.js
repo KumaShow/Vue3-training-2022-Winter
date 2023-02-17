@@ -49,6 +49,10 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/:pathMatch(.*)*", // 全部及子路徑下
+      component: () => import("../views/NotFound.vue"),
+    },
   ],
   linkActiveClass: "active",
 });

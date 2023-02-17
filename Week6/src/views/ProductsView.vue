@@ -77,7 +77,6 @@ import { mapState, mapActions } from "pinia";
 import ProductModal from "../components/ProductModal.vue";
 import TheLoading from "../components/TheLoading.vue";
 import useProductStore from "../stores/useProductStore";
-import useLoadingStore from "../stores/useLoadingStore";
 
 export default {
   components: {
@@ -93,11 +92,9 @@ export default {
       "getProductDetail",
       "addToCart",
     ]),
-    ...mapActions(useLoadingStore, ["doAjax"]),
   },
   mounted() {
     this.getProducts();
-    this.doAjax();
   },
 };
 </script>

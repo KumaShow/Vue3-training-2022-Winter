@@ -134,6 +134,7 @@ export default {
               icon: "success",
               title: "訂單已送出成功",
               showConfirmButton: false,
+              allowOutsideClick: false,
               timer: 1500,
             });
             this.$refs.form.resetForm();

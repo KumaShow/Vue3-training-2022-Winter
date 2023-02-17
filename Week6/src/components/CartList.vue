@@ -85,7 +85,6 @@
 <script>
 import { mapState, mapActions } from "pinia";
 import useCartStore from "../stores/useCartStore.js";
-import useLoadingStore from "../stores/useLoadingStore";
 
 export default {
   data() {
@@ -106,11 +105,9 @@ export default {
       "deleteCartItem",
       "updateCartItem",
     ]),
-    ...mapActions(useLoadingStore, ["doAjax"]),
 
     deleteItem(id) {
       this.deleteCartItem(id);
-      this.doAjax(1000);
     },
   },
 };

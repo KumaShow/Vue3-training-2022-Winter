@@ -1,25 +1,32 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useLoadingStore from "./useLoadingStore";
+
 const { VITE_API, VITE_API_PATH } = import.meta.env;
+const { loadingState } = useLoadingStore();
 
 const useCartStore = defineStore("useCartStore", {
   state: () => ({
     cart: {
       carts: [],
     },
-    // loadingItem,
   }),
   actions: {
     // 取得購物車資料
     getCart() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/cart`;
+
+      // loadingState(true);
+
       axios
         .get(url)
         .then((res) => {
           this.cart = res.data.data;
+          loadingState(false);
         })
         .catch((err) => {
+          loadingState(false);
           alert(err);
         });
     },
@@ -27,10 +34,10 @@ const useCartStore = defineStore("useCartStore", {
     // 清空購物車
     clearAllCarts() {
       const url = `${VITE_API}/api/${VITE_API_PATH}/carts`;
-
       axios
         .delete(url)
         .then(() => {
+          // loadingState(false);
           Swal.fire({
             position: "center",
             icon: "success",
@@ -48,7 +55,7 @@ const useCartStore = defineStore("useCartStore", {
     // 刪除購物車單一產品
     deleteCartItem(id) {
       const url = `${VITE_API}/api/${VITE_API_PATH}/cart/${id}`;
-      this.loadingItem = id;
+      // this.loadingItem = id;
       axios
         .delete(url)
         .then(() => {
@@ -58,9 +65,10 @@ const useCartStore = defineStore("useCartStore", {
             icon: "success",
             title: "已刪除",
             showConfirmButton: false,
+            allowOutsideClick: false,
             timer: 1500,
           });
-          this.loadingItem = "";
+          // this.loadingItem = "";
         })
         .catch((err) => {
           alert(err);
