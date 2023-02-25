@@ -1,1 +1,0 @@
-import{_ as t,bw as a,r as n,o as s,c as r,g as c,F as _,e}from"./index-a232e2f3.js";const p={components:{FrontNavBar:a}},d=e("div",{class:"container"},[e("h2",{class:"text-center"},"404")],-1);function l(m,i,f,u,B,F){const o=n("FrontNavBar");return s(),r(_,null,[c(o),d],64)}const v=t(p,[["render",l]]);export{v as default};

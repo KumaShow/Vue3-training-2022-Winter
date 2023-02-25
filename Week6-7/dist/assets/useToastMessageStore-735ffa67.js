@@ -1,0 +1,1 @@
+import{d as o}from"./index-e4284eff.js";const h=o("useToastMessageStore",{state:()=>({messages:[]}),actions:{pushMessage(s){const{style:e="success",title:t,content:a}=s;this.messages.push({style:e,title:t,content:a}),this.shiftToast()},shiftToast(){setTimeout(()=>{this.messages.shift()},5e3)},clearToast(s){this.messages.splice(s,1)}}});export{h as u};
